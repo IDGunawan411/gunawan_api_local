@@ -6,6 +6,7 @@ import androidx.room.Room;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.ProgressBar;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -21,6 +22,9 @@ import org.json.JSONObject;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    ProgressBar pb;
+    static MyDatabase db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +48,10 @@ public class MainActivity extends AppCompatActivity {
         String url = "https://www.themealdb.com/api/json/v1/1/filter.php?c=Seafood";
 
         JsonObjectRequest jsObjRequest = new JsonObjectRequest(
-                Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+            Request.Method.GET, url, null,
+
+            new Response.Listener<JSONObject>() {
+
             @Override
             public void onResponse(JSONObject response) {
                 Log.d("cek json", response.toString());
@@ -61,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
                             db.dataDao().insertAll(new Meal(nama, image));
                         }
                         // Jika data sudah masuk smua, buka mainactivity
-                        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                        Intent i = new Intent(getApplicationContext(), MainAppActivity.class);
                         i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         getApplicationContext().startActivity(i);
                         finish(); //tutup activity
